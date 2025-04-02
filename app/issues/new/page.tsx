@@ -1,28 +1,34 @@
 "use client";
+import { createIssueSchema } from "@/app/validationSchemas";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { CiCircleAlert } from "react-icons/ci";
-
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { CiCircleAlert } from "react-icons/ci";
+import { z } from "zod";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewPage = () => {
   const router = useRouter();
-  const { register, control, handleSubmit } = useForm<IssueForm>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
+    resolver: zodResolver(createIssueSchema),
+  });
   const [error, setError] = useState<string>();
 
   return (
@@ -49,6 +55,7 @@ const NewPage = () => {
         })}
       >
         <Input placeholder="Title" {...register("title")} />
+        {errors.title && <p className="text-red-400">{errors.title.message}</p>}
 
         <Controller
           name="description"
@@ -57,6 +64,10 @@ const NewPage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
+
+        {errors.description && (
+          <p className="text-red-400">{errors.description.message}</p>
+        )}
 
         <Button
           type="submit"
