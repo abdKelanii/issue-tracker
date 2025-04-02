@@ -1,5 +1,6 @@
 "use client";
 import { createIssueSchema } from "@/app/validationSchemas";
+import ErrorMessage from "@/components/ErrorMessage";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -55,7 +56,7 @@ const NewPage = () => {
         })}
       >
         <Input placeholder="Title" {...register("title")} />
-        {errors.title && <p className="text-red-400">{errors.title.message}</p>}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
         <Controller
           name="description"
@@ -65,9 +66,7 @@ const NewPage = () => {
           )}
         />
 
-        {errors.description && (
-          <p className="text-red-400">{errors.description.message}</p>
-        )}
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button
           type="submit"
