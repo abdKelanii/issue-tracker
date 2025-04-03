@@ -31,8 +31,21 @@ const NewPage = () => {
   } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
   });
+
   const [error, setError] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setIsSubmitting(true);
+      await axios.post("/api/issues", data);
+      router.push("/issues");
+    } catch (error) {
+      setError("An error occurred while creating the issue. Please try again.");
+      console.log(error);
+      setIsSubmitting(false);
+    }
+  });
 
   return (
     <div className="max-w-xl space-y-3">
@@ -43,22 +56,7 @@ const NewPage = () => {
         </Alert>
       )}
 
-      <form
-        className="space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setIsSubmitting(true);
-            await axios.post("/api/issues", data);
-            router.push("/issues");
-          } catch (error) {
-            setError(
-              "An error occurred while creating the issue. Please try again."
-            );
-            console.log(error);
-            setIsSubmitting(false);
-          }
-        })}
-      >
+      <form className="space-y-3" onSubmit={onSubmit}>
         <Input placeholder="Title" {...register("title")} />
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
