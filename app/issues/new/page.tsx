@@ -1,6 +1,7 @@
 "use client";
 import { createIssueSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/components/ErrorMessage";
+import Loader from "@/components/Loader";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,7 @@ const NewPage = () => {
     resolver: zodResolver(createIssueSchema),
   });
   const [error, setError] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div className="max-w-xl space-y-3">
@@ -45,6 +47,7 @@ const NewPage = () => {
         className="space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setIsSubmitting(true);
             await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (error) {
@@ -52,6 +55,7 @@ const NewPage = () => {
               "An error occurred while creating the issue. Please try again."
             );
             console.log(error);
+            setIsSubmitting(false);
           }
         })}
       >
@@ -70,9 +74,10 @@ const NewPage = () => {
 
         <Button
           type="submit"
-          className="w-full bg-blue-500 text-white hover:bg-blue-600"
+          disabled={isSubmitting}
+          className="w-full bg-blue-500 text-white hover:bg-blue-600 "
         >
-          Submit New Issue
+          {isSubmitting ? <Loader /> : "Submit New Issue"}
         </Button>
       </form>
     </div>
