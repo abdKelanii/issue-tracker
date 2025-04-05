@@ -145,6 +145,15 @@
   --sidebar-ring: oklch(0.488 0.243 264.376);
 }
 
+.link {
+  @apply text-primary;
+}
+
+.link:hover {
+  @apply text-primary/80;
+  text-decoration: underline;
+}
+
 /* From Uiverse.io by alexruix */
 .loader {
   --ballcolor: #fff;

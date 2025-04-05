@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
 import ReactMarkDown from "react-markdown";
+
 interface Props {
   params: {
     id: string;
@@ -16,7 +17,6 @@ const IssueDetailPage = async ({ params }: Props) => {
   });
 
   if (!issue) notFound();
-
   return (
     <div>
       <h1 className="text-2xl font-bold">{issue.title}</h1>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import delay from "delay";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,6 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { CiCircleAlert } from "react-icons/ci";
 import { z } from "zod";
-
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -47,6 +47,7 @@ const NewPage = () => {
       setIsSubmitting(false);
     }
   });
+  delay(50000);
 
   return (
     <div className="max-w-xl space-y-3">
