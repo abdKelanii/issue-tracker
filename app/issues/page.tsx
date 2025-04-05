@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { prisma } from "@/prisma/client";
 import delay from "delay";
+import Link from "next/link";
 import IssueAction from "./IssueAction";
 
 const IssuesPage = async () => {
@@ -31,7 +32,7 @@ const IssuesPage = async () => {
             {issues.map((issue) => (
               <TableRow key={issue.id}>
                 <TableCell>
-                  {issue.title}
+                  <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
                   <div className="block md:hidden">
                     <IssueStatusBadge status={issue.status} />
                   </div>
