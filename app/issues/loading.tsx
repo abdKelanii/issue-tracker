@@ -1,4 +1,4 @@
-import IssueStatusBadge from "@/components/IssueStatusBadge";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -7,20 +7,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { prisma } from "@/prisma/client";
-import delay from "delay";
 import IssueAction from "./IssueAction";
 
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany();
-  await delay(2000);
-
+const LoadingIssuesPage = () => {
+  const issues = [1, 2, 3, 4, 5];
   return (
-    <div className="">
+    <div>
       <IssueAction />
       <div className="border rounded-lg overflow-hidden">
         <Table>
-          <TableHeader className="bg-blue-50 ">
+          <TableHeader className="bg-blue-50">
             <TableRow>
               <TableHead>Issue</TableHead>
               <TableHead className="hidden md:table-cell">Status</TableHead>
@@ -29,18 +25,19 @@ const IssuesPage = async () => {
           </TableHeader>
           <TableBody>
             {issues.map((issue) => (
-              <TableRow key={issue.id}>
+              <TableRow key={issue}>
                 <TableCell>
-                  {issue.title}
+                  <Skeleton className="h-5 w-32" />
+
                   <div className="block md:hidden">
-                    <IssueStatusBadge status={issue.status} />
+                    <Skeleton className="h-5 w-32" />
                   </div>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  <IssueStatusBadge status={issue.status} />
+                  <Skeleton className="h-5 w-32" />
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  {issue.createdAt.toDateString()}
+                  <Skeleton className="h-5 w-32" />
                 </TableCell>
               </TableRow>
             ))}
@@ -51,4 +48,4 @@ const IssuesPage = async () => {
   );
 };
 
-export default IssuesPage;
+export default LoadingIssuesPage;

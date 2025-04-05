@@ -12,7 +12,9 @@ const statusMap: Record<
 
 const IssueStatusBadge = ({ status }: { status: Status }) => {
   return (
-    <Badge className="uppercase rounded-full" variant={statusMap[status].color}>{statusMap[status].lable}</Badge>
+    <Badge className="uppercase rounded-full" variant={statusMap[status].color}>
+      {statusMap[status].lable}
+    </Badge>
   );
 };
 
