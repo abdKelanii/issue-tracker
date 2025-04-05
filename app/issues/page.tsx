@@ -8,13 +8,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { prisma } from "@/prisma/client";
-import delay from "delay";
 import Link from "next/link";
 import IssueAction from "./IssueAction";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
-  await delay(2000);
 
   return (
     <div className="">
