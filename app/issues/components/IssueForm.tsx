@@ -40,7 +40,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setIsSubmitting(true);
-      await axios.post("/api/issues", data);
+      if (issue) await axios.patch(`/api/issues/${issue.id}`, data);
+      else await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error) {
       setError("An error occurred while creating the issue. Please try again.");
@@ -83,7 +84,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           disabled={isSubmitting}
           className="w-full bg-blue-500 text-white hover:bg-blue-600 "
         >
-          {isSubmitting ? <Loader /> : "Submit New Issue"}
+          {isSubmitting ? <Loader /> : issue ? "Update Issue" : "Create Issue"}
         </Button>
       </form>
     </div>
