@@ -1,4 +1,4 @@
-import IssueStatusBadge from "@/components/IssueStatusBadge";
+import { IssueStatusBadge } from "@/components/index";
 import {
   Table,
   TableBody,
@@ -30,7 +30,9 @@ const IssuesPage = async () => {
             {issues.map((issue) => (
               <TableRow key={issue.id}>
                 <TableCell>
-                  <Link href={`/issues/${issue.id}`} className="link">{issue.title}</Link>
+                  <Link href={`/issues/${issue.id}`} className="link">
+                    {issue.title}
+                  </Link>
                   <div className="block md:hidden">
                     <IssueStatusBadge status={issue.status} />
                   </div>
