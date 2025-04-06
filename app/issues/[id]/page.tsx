@@ -1,7 +1,10 @@
 import IssueStatusBadge from "@/components/IssueStatusBadge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/prisma/client";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FaEdit } from "react-icons/fa";
 import ReactMarkDown from "react-markdown";
 
 interface Props {
@@ -18,17 +21,25 @@ const IssueDetailPage = async ({ params }: Props) => {
 
   if (!issue) notFound();
   return (
-    <div>
-      <h1 className="text-2xl font-bold">{issue.title}</h1>
-      <div className="flex gap-2 items-center my-3">
-        <IssueStatusBadge status={issue.status} />
-        <p>{issue.createdAt.toDateString()}</p>
+    <div className="grid md:grid-cols-2 gap-5">
+      <div>
+        <h1 className="text-2xl font-bold">{issue.title}</h1>
+        <div className="flex gap-2 items-center my-3">
+          <IssueStatusBadge status={issue.status} />
+          <p>{issue.createdAt.toDateString()}</p>
+        </div>
+        <Card className="prose">
+          <CardContent>
+            <ReactMarkDown>{issue.description}</ReactMarkDown>
+          </CardContent>
+        </Card>
       </div>
-      <Card className="prose">
-        <CardContent>
-          <ReactMarkDown>{issue.description}</ReactMarkDown>
-        </CardContent>
-      </Card>
+      <div>
+        <Button>
+          <FaEdit />
+          <Link href={`/issues/${issue.id}/edit`}>Edit Issue</Link>
+        </Button>
+      </div>
     </div>
   );
 };
