@@ -4,10 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   requests: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const body = await requests.json();
   const validation = issueSchema.safeParse(body);
+
+  const { id } = await params;
 
   if (!validation.success)
     return NextResponse.json(validation.error.format(), {
@@ -16,7 +18,7 @@ export async function PATCH(
     });
 
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
   });
 
   if (!issue)
@@ -26,7 +28,7 @@ export async function PATCH(
     );
 
   const updatedIssue = await prisma.issue.update({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
     data: {
       title: body.title,
       description: body.description,
